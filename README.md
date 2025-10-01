@@ -1,5 +1,52 @@
 _This repository is not affiliated with Powerpal.  This code builds on previous work from WeekendWarrior1 and muneeb1990_
 
+# My modification is as follows:
+
+Change your YAML to be this:
+
+```yaml
+external_components:
+  - source:
+      type: git
+      url: https://github.com/SleepinDevil/esphome-powerpal_ble.git
+    components: [ powerpal_ble ]
+    refresh: 1d
+
+text_sensor:
+  - platform: template
+    name: "Powerpal API Key"
+    id: powerpal_api_key
+
+button:
+  - platform: restart
+    name: "Restart"
+    icon: "mdi:restart"
+  - platform: template
+    name: "Powerpal: Set Device Time (now)"
+    on_press:
+      - ble_client.ble_write:
+          id: powerpal
+          service_uuid: '59DAABCD-12F4-25A6-7D4F-55961DCE4205'
+          characteristic_uuid: '59DA0004-12F4-25A6-7D4F-55961DCE4205'   # time
+          value: !lambda |-
+            uint32_t t = id(homeassistant_time).now().timestamp;
+            return std::vector<uint8_t>{
+              (uint8_t)(t      ), (uint8_t)(t >> 8),
+              (uint8_t)(t >> 16), (uint8_t)(t >> 24)
+            };
+  - platform: template
+    name: "Retrieve API Key"
+    on_press:
+      then:
+        - lambda: |-
+            std::string api_key = id(powerpal_ble_sensor).get_apikey();
+            id(powerpal_api_key).publish_state(api_key);
+```
+
+This will give you two DEBUG type buttons in your HA interface to easily set the RTC on your Powerpal and to retrieve the API Key.
+
+
+
 # powerpal_ble
 Collection of code, tools and documentation for data retrieval over BLE from your Powerpal.
 
