@@ -95,6 +95,10 @@ class Powerpal : public esphome::ble_client::BLEClientNode, public Component {
   void set_device_id(std::string powerpal_device_id) { powerpal_device_id_ = powerpal_device_id; }
   void set_apikey(std::string powerpal_apikey) { powerpal_apikey_ = powerpal_apikey; }
   void set_energy_cost(double energy_cost) { energy_cost_ = energy_cost; }
+  // API key retrieval function included here
+  std::string get_apikey() const {
+    return this->powerpal_apikey_;
+  }
 
  protected:
   // Persisted daily pulses:
