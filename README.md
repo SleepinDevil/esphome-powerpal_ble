@@ -1,4 +1,4 @@
-_This repository is not affiliated with Powerpal.  This code builds on previous work from WeekendWarrior1 and muneeb1990_
+_This repository is not affiliated with Powerpal.  This code builds on previous work from WeekendWarrior1, muneeb1990_ and gurrier
 
 # My modification is as follows:
 
